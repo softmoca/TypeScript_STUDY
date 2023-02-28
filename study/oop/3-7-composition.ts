@@ -1,4 +1,12 @@
 {
+  //상속의 문제점 : 클래스는 하나의 클래스만 상속을 할 수있다,
+  //예시) SweetCaffeLatteMachine extends SweetCoffeeMaker, CaffaLatteMachine
+  //
+  //Composition(구성요소) : 각각의 클래스에서 필요한것을 매번 구현하는것이 아니라,
+  // 각각의 기능별로 클래스르 따로 만들어서 따로 가져와서 쓴다.
+  // 단점 : 클래스와 클래스간의 사이를 관계지으면 유지보수가 힘들어진다.==> 인터 페이스로 composition
+  //
+
   type CoffeeCup = {
     shots: number;
     hasMilk?: boolean;
@@ -61,25 +69,25 @@
 
     fillCoffeeBeans(beans: number) {
       if (beans < 0) {
-        throw new Error('value for beans should be greater than 0');
+        throw new Error("value for beans should be greater than 0");
       }
       this.coffeeBeans += beans;
     }
 
     clean() {
-      console.log('cleaning the machine...🧼');
+      console.log("cleaning the machine...🧼");
     }
 
     private grindBeans(shots: number) {
       console.log(`grinding beans for ${shots}`);
       if (this.coffeeBeans < shots * CoffeeMachine.BEANS_GRAMM_PER_SHOT) {
-        throw new Error('Not enough coffee beans!');
+        throw new Error("Not enough coffee beans!");
       }
       this.coffeeBeans -= shots * CoffeeMachine.BEANS_GRAMM_PER_SHOT;
     }
 
     private preheat(): void {
-      console.log('heating up... 🔥');
+      console.log("heating up... 🔥");
     }
 
     private extract(shots: number): CoffeeCup {
@@ -99,10 +107,11 @@
 
   class CaffeLatteMachine extends CoffeeMachine {
     constructor(beans: number, public readonly serialNumber: string) {
+      // 필요한 걸 가져온다다. dependency injection
       super(beans);
     }
     private steamMilk(): void {
-      console.log('Steaming some milk... 🥛');
+      console.log("Steaming some milk... 🥛");
     }
     makeCoffee(shots: number): CoffeeCup {
       const coffee = super.makeCoffee(shots);
@@ -128,7 +137,7 @@
     constructor(
       beans: number,
       private sugar: SugarSource,
-      private milk: MilkFrother,
+      private milk: MilkFrother
     ) {
       super(beans);
     }
